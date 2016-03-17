@@ -4,28 +4,35 @@ using System.Collections;
 public class Movement : MonoBehaviour {
     public float speed = 6;
     public float acceleration = 15;
+    public float rotationSpeed = 15;
 
-    Rigidbody rigid;
-    bool movementDisabled;
-    float hInput;
-    float vInput;
+    protected Rigidbody rigid;
+    protected bool movementDisabled;
+    protected bool rotationDisabled;
+    protected float hInput;
+    protected float vInput;
 
-    void Start()
+    protected virtual void Start()
     {
         rigid = GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate()
+    protected virtual void Update()
     {
-        updateVelocity();
+        updateRotation(this.hInput, this.vInput);
+        updateVelocity(this.hInput, this.vInput);
+
     }
 
-    void updateVelocity()
+    void FixedUpdate()
+    {
+    }
+
+    protected virtual void updateVelocity(float hInput, float vInput)
     {
         if (movementDisabled)
         {
-            hInput = 0;
-            vInput = 0;
+            return;
         }
 
         Vector3 goalVec = new Vector3(hInput, 0, vInput).normalized;
@@ -52,5 +59,19 @@ public class Movement : MonoBehaviour {
             return;
         }
         this.vInput = vInput;
+    }
+
+    protected virtual void updateRotation(float hInput, float vInput)
+    {
+        if (rotationDisabled)
+        {
+            return;
+        }
+        if (Mathf.Abs(hInput) > .01f || Mathf.Abs(vInput) > .01f)
+        {
+            float yRotation = Mathf.Atan2(hInput, vInput) * Mathf.Rad2Deg;
+            Vector3 goalRotation = yRotation * Vector3.up;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(goalRotation), Time.deltaTime * rotationSpeed);
+        }
     }
 }
