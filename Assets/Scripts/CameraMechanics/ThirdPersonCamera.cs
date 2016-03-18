@@ -18,7 +18,13 @@ public class ThirdPersonCamera : MonoBehaviour {
         target = transform.parent;
         transform.parent = null;
         distanceFromTarget = -(target.position - transform.position).magnitude;
+        GetComponent<CameraCollider>().setDefaultDistance(distanceFromTarget);
         oldRotation = transform.eulerAngles;
+    }
+
+    public void setCurrentMagnitude(float mag)
+    {
+        this.distanceFromTarget = mag;
     }
 
     void Update()
@@ -66,7 +72,7 @@ public class ThirdPersonCamera : MonoBehaviour {
         float distance = distanceFromTarget;
         
         Vector3 goalPosition = target.position + transform.forward * distance;
-        transform.position = Vector3.Slerp(transform.position, goalPosition, Time.deltaTime * cameraMoveSmoothing);
+        transform.position = Vector3.MoveTowards(transform.position, goalPosition, Time.deltaTime * cameraMoveSmoothing);
     }
 
     void lookHorizontal(float horizontalInput)

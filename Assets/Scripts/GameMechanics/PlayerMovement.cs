@@ -3,7 +3,6 @@ using System.Collections;
 
 public class PlayerMovement : Movement {
     Transform cameraFollow;
-    public float gravPull = .01f;
 
     protected override void Start()
     {
@@ -23,7 +22,6 @@ public class PlayerMovement : Movement {
     {
 
         Vector2 inputConversion = convertCameraForward(hInput, vInput);
-        print(inputConversion.x + "   " + inputConversion.y + "  Input Conversion");
         base.updateVelocity(inputConversion.x, inputConversion.y);
         
     }
