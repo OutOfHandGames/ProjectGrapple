@@ -4,6 +4,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
     void Start()
     {
-        UnityEngine.Cursor.visible = false;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }
