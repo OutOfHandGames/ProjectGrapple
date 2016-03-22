@@ -74,4 +74,16 @@ public class Movement : MonoBehaviour {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(goalRotation), Time.deltaTime * rotationSpeed);
         }
     }
+
+    public float getSpeed()
+    {
+        if (hInput == 0 && vInput == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return Mathf.Sqrt(Mathf.Pow(hInput, 2) + Mathf.Pow(vInput, 2));
+        }
+    }
 }
